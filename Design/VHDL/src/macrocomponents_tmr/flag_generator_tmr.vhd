@@ -13,17 +13,17 @@ library IEEE;
 entity flag_generator_tmr is
   generic (
     -- Number of input sum bit
-  	FLG_GEN_TMR_IN_N_BITS   : positive  := 8;
+  	FLG_GEN_TMR_SUM_N_BITS   : positive  := 8;
     -- Number of flag codification bit
-    FLG_GEN_TMR_RES_N_BITS  : positive  := 2;
+    FLG_GEN_TMR_FLG_N_BITS  : positive  := 2;
     -- The description only support N=3 modular redundancy
     -- TMR by default
     FLG_GEN_TMR_N_MODULES : positive := 3
   );
   port(
-    flg_gen_tmr_sum_res     : in  std_logic_vector(FLG_GEN_TMR_IN_N_BITS-1 downto 0);
+    flg_gen_tmr_sum_res     : in  std_logic_vector(FLG_GEN_TMR_SUM_N_BITS-1 downto 0);
     flg_gen_tmr_sum_cout    : in  std_logic;
-    flg_gen_tmr_flag_res    : out std_logic_vector(FLG_GEN_TMR_RES_N_BITS-1 downto 0)
+    flg_gen_tmr_flag_res    : out std_logic_vector(FLG_GEN_TMR_FLG_N_BITS-1 downto 0)
   );
 end entity;
 
@@ -34,7 +34,7 @@ architecture flag_gen_tmr_arch of flag_generator_tmr is
   -- Each std_logic_vector has as many elements as the number of bit of each flag_generator
   -- There are as many array elements as the number of redundant modules
   type FLG_GEN_TMR_ARRAY_TYPE is array (0 to FLG_GEN_TMR_N_MODULES-1) 
-    of std_logic_vector(FLG_GEN_TMR_RES_N_BITS-1 downto 0);
+    of std_logic_vector(FLG_GEN_TMR_FLG_N_BITS-1 downto 0);
   
   
   --------------------------------------------------------------
@@ -65,8 +65,8 @@ begin
   g_GEN: for i in 0 to FLG_GEN_TMR_N_MODULES-1 generate
     i_GEN : flag_generator
       generic map ( 
-        FLG_GEN_IN_N_BITS   =>  FLG_GEN_TMR_IN_N_BITS,
-        FLG_GEN_RES_N_BITS  =>  FLG_GEN_TMR_RES_N_BITS
+        FLG_GEN_SUM_N_BITS   =>  FLG_GEN_TMR_SUM_N_BITS,
+        FLG_GEN_FLG_N_BITS  =>  FLG_GEN_TMR_FLG_N_BITS
       )
       port map (
         flg_gen_sum_res     => flg_gen_tmr_sum_res, 

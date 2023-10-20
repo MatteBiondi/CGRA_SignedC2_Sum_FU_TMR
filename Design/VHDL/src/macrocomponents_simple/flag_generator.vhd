@@ -13,14 +13,14 @@ library IEEE;
 entity flag_generator is
   generic (
     -- Number of input sum bit
-  	FLG_GEN_IN_N_BITS   : positive  := 8;
+  	FLG_GEN_SUM_N_BITS  : positive  := 8;
     -- Number of flag codification bit
-    FLG_GEN_RES_N_BITS  : positive  := 2
+    FLG_GEN_FLG_N_BITS  : positive  := 2
   );
   port(
-    flg_gen_sum_res     : in  std_logic_vector(FLG_GEN_IN_N_BITS-1 downto 0);
+    flg_gen_sum_res     : in  std_logic_vector(FLG_GEN_SUM_N_BITS-1 downto 0);
     flg_gen_sum_cout    : in  std_logic;
-    flg_gen_flag_res    : out std_logic_vector(FLG_GEN_RES_N_BITS-1 downto 0)
+    flg_gen_flag_res    : out std_logic_vector(FLG_GEN_FLG_N_BITS-1 downto 0)
   );
 end entity;
 
@@ -35,7 +35,7 @@ begin
       -- "01" : Overflow Flag Codification
       flg_gen_flag_res  <=  "01";
     
-    elsif (flg_gen_sum_res(FLG_GEN_IN_N_BITS-1) = '1')
+    elsif (flg_gen_sum_res(FLG_GEN_SUM_N_BITS-1) = '1')
       -- "10" : Negative Result Flag Codification
       flg_gen_flag_res  <=  "01";
 
