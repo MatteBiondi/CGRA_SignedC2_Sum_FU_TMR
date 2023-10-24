@@ -1,16 +1,17 @@
 --------------------------------------------------------------
 -- Packages list
 --------------------------------------------------------------
-
 library IEEE;
   use IEEE.std_logic_1164.all; 
 
 --------------------------------------------------------------
 -- Component Description
--- This VHDL file describe a FIFO with blocks of 11 bits each.
--- The component use a ready-valid handshake 
+-- This VHDL file describe a FIFO with blocks of N-bits each
+-- and with a certain depth. The component uses a ready-valid
+-- handshake for input data and can wait for another FIFO to 
+-- have valid data as the top value. Output data uses the same
+-- ready-valid handshake.  
 --------------------------------------------------------------
-
 entity fifo is
   generic (
   	-- Number of FIFO internal blocks
@@ -21,40 +22,37 @@ entity fifo is
     FIFO_DATA_WIDTH : natural := 10
   );
   port(
-    fifo_clk              : in std_logic;
-    fifo_async_rst_n      : in std_logic;
-
-    fifo_data_in          : in std_logic_vector(FIFO_DATA_WIDTH - 1 downto 0);
-    fifo_valid_in         : in std_logic;
-    fifo_ready_downstream : in std_logic;
-    -- Valid bit from final state of another FIFO
-    -- Set to '0' if not present to ignore its effect
-    fifo_sync_final_state : in std_logic;
-
-    fifo_data_out         : out std_logic_vector(FIFO_DATA_WIDTH - 1 downto 0);
-    fifo_ready_upstream   : out std_logic;
-    fifo_valid_out        : out std_logic
+    -- INPUT --
+    fifo_clk              : in std_logic;                                       -- Clock
+    fifo_async_rst_n      : in std_logic;                                       -- Asynchronous reset low
+    fifo_data_in          : in std_logic_vector(FIFO_DATA_WIDTH - 1 downto 0);  -- Input data
+    fifo_valid_in         : in std_logic;                                       -- Validity bit for input data
+    fifo_ready_downstream : in std_logic;                                       -- Ready bit from downstream
+    fifo_sync_final_state : in std_logic;                                       -- Validity bit from final state of another FIFO
+                                                                                -- Set to '0' if not present to ignore its effect
+    -- OUTPUT --
+    fifo_data_out         : out std_logic_vector(FIFO_DATA_WIDTH - 1 downto 0); -- Output data
+    fifo_ready_upstream   : out std_logic;                                      -- Ready bit from upstream
+    fifo_valid_out        : out std_logic                                       -- Validity bit for output data
   );
 end entity;
 
+
+--------------------------------------------------------------
+-- Architecture declaration
+--------------------------------------------------------------
 architecture fifo_arch of fifo is
   --------------------------------------------------------------
   -- Types definition
   --------------------------------------------------------------
-  -- Signal at position 'i' reppresents the input at the i-th register
-  -- Signal at position from 'FIFO_DEPTH' reppresents the output of the last register
+  -- Signal at position 'i' reppresents the input at the i-th 
+  -- register. Signal at position 'FIFO_DEPTH' reppresents the 
+  -- output of the last register.
   -- 1) bit 0-7 : Data payload
   -- 2) bit 8-9 : Data flag
   -- 3) bit 10  : Validity bit
   type internal_fifo_signal is array (0 to FIFO_DEPTH) 
     of std_logic_vector(FIFO_DATA_WIDTH downto 0);
-
-  --------------------------------------------------------------
-  -- Signals declaration
-  --------------------------------------------------------------
-  signal int_reg_sig    : internal_fifo_signal;
-  signal int_reg_valid  : std_logic_vector(FIFO_DEPTH-1 downto 0);
-  signal int_reg_enable : std_logic_vector(FIFO_DEPTH-1 downto 0);
 
   --------------------------------------------------------------
   -- Components declaration
@@ -73,6 +71,12 @@ architecture fifo_arch of fifo is
     );
   end component;
 
+  --------------------------------------------------------------
+  -- Signals declaration
+  --------------------------------------------------------------
+  signal int_reg_sig    : internal_fifo_signal;                     -- Registers content
+  signal int_reg_enable : std_logic_vector(FIFO_DEPTH-1 downto 0);  -- Enable bits for each stage register
+
 begin
 
   g_DFF: for i in 0 to FIFO_DEPTH - 1 generate
@@ -90,32 +94,36 @@ begin
         dff_async_rst_n => fifo_async_rst_n,
         dff_en      	  => int_reg_enable(i),
         dff_d       	  => int_reg_sig(i),
-        dff_q       	  => int_reg_sig(i+1)
+        dff_q           => int_reg_sig(i+1)
       );
   end generate;
 
-  -- Input at the first register is the concatenation of input valid and input data (flag and payload)
+  -- Input at the first register is the concatenation of input validity bit
+  -- and input data (flag and payload)
   int_reg_sig(0)      <=  fifo_valid_in & fifo_data_in;
 
   -- Output of the last register is handled to fit the output port of this component
   -- Payload and flag bits assignment 
   fifo_data_out       <=  int_reg_sig(FIFO_DEPTH)(FIFO_DATA_WIDTH-1 downto 0);
-  -- Valid bit assignment
+  -- Validity bit assignment
   fifo_valid_out      <=  int_reg_sig(FIFO_DEPTH)(FIFO_DATA_WIDTH);
 
-  fifo_ready_upstream <=  int_reg_enable(0);
-  --TODO: Come diventa in caso di reset?
-
-  p_FIFO_ENABLE: process (fifo_sync_final_state, fifo_ready_downstream, int_reg_valid)
+  -- Enable bits handling and Ready upstream output
+  p_FIFO_ENABLE: process (fifo_sync_final_state, fifo_ready_downstream, int_reg_sig, int_reg_enable)
     begin
       for i in FIFO_DEPTH-1 downto 0 loop
-        int_reg_valid(i) = int_reg_sig(i+1)(FIFO_DATA_WIDTH);
-
+        
         if i = FIFO_DEPTH-1 then
-          int_reg_enable(FIFO_DEPTH-1) = fifo_sync_final_state or fifo_ready_downstream or not int_reg_valid(i);
+          -- The enable bit of the last FIFO stage requires different management than all the other stages
+          int_reg_enable(FIFO_DEPTH-1) <= (fifo_sync_final_state and fifo_ready_downstream) or not int_reg_sig(i+1)(FIFO_DATA_WIDTH);
         else
-          int_reg_enable(i) = int_reg_enable(i+1) or not int_reg_valid(i)
+          -- Enable bit for all the other FIFO stages 
+          int_reg_enable(i) <= int_reg_enable(i+1) or not int_reg_sig(i+1)(FIFO_DATA_WIDTH);
         end if;
+
+        -- Upstream ready bit handling. A new data can be given to FIFO only in case 
+        -- first stage is not in hold state
+        fifo_ready_upstream <=  int_reg_enable(0);
       end loop;
     end process;
 
