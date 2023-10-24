@@ -80,8 +80,6 @@ begin
 
   -- Define clock behaviour
   clk_tb    <= not clk_tb after CLK_PERIOD/2 when testing else '0';
-  -- Define reset behaviour: 'deactivate' reset after T_RESET ns
-  arstn_tb  <= '1' after T_RESET; 
 
   -- Test definition
   STIMULI: process(clk_tb, arstn_tb)
@@ -93,6 +91,8 @@ begin
       valid_in          <= '0';
       ready_downstream  <= '0';
       sync_final_state  <= '0';
+      -- Define reset behaviour: 'deactivate' reset after T_RESET ns
+      arstn_tb  <= '1' after T_RESET; 
     elsif rising_edge(clk_tb) then
       case(t) is 
         when 0  =>  
@@ -207,7 +207,16 @@ begin
           --    The previously presented data is written in the first stage. Ready upstream is '1' and all 
           --    enable signals are '1'. FIFO starts flushing contents till the end of simulation substituting
           --    valid data with not valid data.
-        when 20 =>  
+        when 20 =>
+          data_in           <= (others =>  '1');
+          valid_in          <= '1';
+          -- Description: A new valid data is presented as input. It will be save in first stage in the next cycle
+          -- Result: Input changed. It will enter in FIFO next cycle.
+        when 22 =>
+          arstn_tb          <= '0';
+          -- Description: Reset is activated
+          -- Result: The valid data that was in the FIFO is discarded and FIFO revert in the reset situation
+        when 25 =>  
           report("End simulation");
           testing <= false;  -- Stops the simulation
         when others => null;
