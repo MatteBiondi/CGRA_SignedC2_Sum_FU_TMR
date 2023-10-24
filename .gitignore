@@ -1,8 +1,8 @@
-Design/Simulation/*
-!Design/Simulation/*/*.do
+Design/Simulation/*/*/*
+!Design/Simulation/*/*/*.do
 Design/Synthesis/*
 !Design/Synthesis/clock.xdc
-aux 
+aux
 *.bit 
 *.blg 
 *.bbl 
