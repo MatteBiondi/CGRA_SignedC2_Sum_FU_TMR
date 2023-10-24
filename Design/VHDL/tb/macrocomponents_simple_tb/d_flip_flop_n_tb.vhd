@@ -48,8 +48,6 @@ architecture dff_tb_arch of d_flip_flop_n_tb is
 begin
   -- Define clock behaviour
   clk_tb <= not clk_tb after CLK_PERIOD/2 when testing else '0';
-  -- Define reset behaviour: 'deactivate' reset after T_RESET ns
-  arstn_tb <= '1' after T_RESET; 
 
   -- Component mapping
   DUT: d_flip_flop_n
@@ -71,6 +69,8 @@ begin
     if arstn_tb = '0' then
       d_tb  <= (others => '0');
       en_tb <= '0';
+      -- Define reset behaviour: 'deactivate' reset
+      arstn_tb <= '1' after T_RESET; 
     elsif rising_edge(clk_tb) then
       case(t) is 
         when 0  =>  
@@ -79,7 +79,7 @@ begin
         when 3  =>  en_tb     <= '1';
         when 5  =>  d_tb      <= (others => '0');
         when 7  =>  en_tb     <= '0';
-        when 9  =>  arstn_tb  <= '0';
+        when 9  =>  arstn_tb  <= '0'; -- Activate Reset
         when 11 =>  d_tb      <= (others => '1');
         when 20 =>  
           report("End simulation");
