@@ -1,7 +1,6 @@
 --------------------------------------------------------------
 -- Packages list
 --------------------------------------------------------------
-
 library IEEE;
   use IEEE.std_logic_1164.all; 
 
@@ -11,27 +10,31 @@ library IEEE;
 -- N bits. The DFF components have asynchronous reset and 
 -- 'enable' port as input. 
 --------------------------------------------------------------
-
 entity d_flip_flop_n_tmr is
   generic (
     -- Number of register bits
     -- 1) bit 0-7 : Data payload
     -- 2) bit 8-9 : Data flag
     -- 3) bit 10  : Validity bit
-    DFF_TMR_N_BITS    : natural := 11;
+    DFF_TMR_N_BITS      : natural := 11;
     -- The description only support N=3 modular redundancy
     -- TMR by default
-    DFF_TMR_N_MODULES : positive := 3
+    DFF_TMR_N_MODULES   : positive := 3
   );
   port (
-    dff_tmr_clk         : in std_logic;
-    dff_tmr_async_rst_n : in std_logic;
-    dff_tmr_en          : in std_logic;
-    dff_tmr_d           : in std_logic_vector(DFF_TMR_N_BITS - 1 downto 0);
-    dff_tmr_q           : out std_logic_vector(DFF_TMR_N_BITS - 1 downto 0)
+    -- INPUT --
+    dff_tmr_clk         : in std_logic;                                       -- Clock
+    dff_tmr_async_rst_n : in std_logic;                                       -- Asynchronous reset low
+    dff_tmr_en          : in std_logic;                                       -- Enable
+    dff_tmr_d           : in std_logic_vector(DFF_TMR_N_BITS - 1 downto 0);   -- Input data
+    -- OUTPUT --
+    dff_tmr_q           : out std_logic_vector(DFF_TMR_N_BITS - 1 downto 0)   -- Output data
   );
 end entity;
 
+--------------------------------------------------------------
+-- Architecture declaration
+--------------------------------------------------------------
 architecture dff_tmr_arch of d_flip_flop_n_tmr is
   --------------------------------------------------------------
   -- Types definition
@@ -45,7 +48,8 @@ architecture dff_tmr_arch of d_flip_flop_n_tmr is
   --------------------------------------------------------------
   -- Signals declaration
   --------------------------------------------------------------
-  signal internal_q           : DFF_TMR_ARRAY_TYPE;
+  -- Signal for output from DFFs
+  signal internal_q   : DFF_TMR_ARRAY_TYPE;
 
 
   --------------------------------------------------------------
@@ -54,7 +58,7 @@ architecture dff_tmr_arch of d_flip_flop_n_tmr is
   component d_flip_flop_n is
     generic (
       -- Number of register bits
-      DFF_N_BITS : natural
+      DFF_N_BITS      : natural
     );
     port (
       dff_clk         : in std_logic;
@@ -84,11 +88,9 @@ begin
   -- Majority vote election for 3 input data of DFF_TMR_N_BITS each
   -- Formula:
   -- Input: x,y,z | Output: r | result: r = NAND(NAND(x,y), NAND(x,z), NAND(y,z)) 
-
-  dff_tmr_q   <=  NAND(
-                    NAND(internal_q(0),internal_q(1)),
-                    NAND(internal_q(1),internal_q(2)),
-                    NAND(internal_q(0),internal_q(2))
-                  );
+  -- Equivalent to r = xy + yz + xz
+  dff_tmr_q   <=  (internal_q(0) and internal_q(1)) or
+                  (internal_q(1) and internal_q(2)) or
+                  (internal_q(0) and internal_q(2));
 
 end architecture;
