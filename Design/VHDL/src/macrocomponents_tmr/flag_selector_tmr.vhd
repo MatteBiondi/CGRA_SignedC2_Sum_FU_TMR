@@ -91,7 +91,7 @@ begin
       );
   end generate;
 
-  -- Majority vote election for 3 input data of FLG_SLC_TMR_N_BITS each
+  -- Majority vote election for 3 input data of FLG_SLC_TMR_FLAG_N_BITS each
   -- Formula:
   -- Input: x,y,z | Output: r | result: r = NAND(NAND(x,y), NAND(x,z), NAND(y,z)) 
   -- Equivalent to r = xy + yz + xz
