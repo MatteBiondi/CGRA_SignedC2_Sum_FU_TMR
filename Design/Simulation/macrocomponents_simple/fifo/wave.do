@@ -9,12 +9,12 @@ add wave -noupdate /fifo_tb/sync_final_state
 add wave -noupdate /fifo_tb/data_out
 add wave -noupdate /fifo_tb/ready_upstream
 add wave -noupdate /fifo_tb/valid_out
+add wave -noupdate /fifo_tb/testing
 add wave -noupdate -expand /fifo_tb/DUT/int_reg_sig
 add wave -noupdate -expand /fifo_tb/DUT/int_reg_enable
-add wave -noupdate /fifo_tb/testing
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {2474168 ps} 0}
-quietly wave cursor active 1
+WaveRestoreCursors {{Cursor 1} {0 ps} 0}
+quietly wave cursor active 0
 configure wave -namecolwidth 150
 configure wave -valuecolwidth 100
 configure wave -justifyvalue left
