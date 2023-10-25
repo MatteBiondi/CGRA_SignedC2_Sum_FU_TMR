@@ -29,7 +29,7 @@ entity fifo is
     fifo_valid_in         : in std_logic;                                       -- Validity bit for input data
     fifo_ready_downstream : in std_logic;                                       -- Ready bit from downstream
     fifo_sync_final_state : in std_logic;                                       -- Validity bit from final state of another FIFO
-                                                                                -- Set to '0' if not present to ignore its effect
+                                                                                -- Set to '1' if not present to ignore its effect
     -- OUTPUT --
     fifo_data_out         : out std_logic_vector(FIFO_DATA_WIDTH - 1 downto 0); -- Output data
     fifo_ready_upstream   : out std_logic;                                      -- Ready bit from upstream
@@ -100,13 +100,13 @@ begin
 
   -- Input at the first register is the concatenation of input validity bit
   -- and input data (flag and payload)
-  int_reg_sig(0)      <=  fifo_valid_in & fifo_data_in;
+  int_reg_sig(0)  <=  fifo_valid_in & fifo_data_in;
 
   -- Output of the last register is handled to fit the output port of this component
   -- Payload and flag bits assignment 
-  fifo_data_out       <=  int_reg_sig(FIFO_DEPTH)(FIFO_DATA_WIDTH-1 downto 0);
+  fifo_data_out   <=  int_reg_sig(FIFO_DEPTH)(FIFO_DATA_WIDTH-1 downto 0);
   -- Validity bit assignment
-  fifo_valid_out      <=  int_reg_sig(FIFO_DEPTH)(FIFO_DATA_WIDTH);
+  fifo_valid_out  <=  int_reg_sig(FIFO_DEPTH)(FIFO_DATA_WIDTH);
 
   -- Enable bits handling and Ready upstream output
   p_FIFO_ENABLE: process (fifo_sync_final_state, fifo_ready_downstream, int_reg_sig, int_reg_enable)
@@ -121,10 +121,10 @@ begin
           int_reg_enable(i) <= int_reg_enable(i+1) or not int_reg_sig(i+1)(FIFO_DATA_WIDTH);
         end if;
 
-        -- Upstream ready bit handling. A new data can be given to FIFO only in case 
-        -- first stage is not in hold state
-        fifo_ready_upstream <=  int_reg_enable(0);
       end loop;
+      -- Upstream ready bit handling. A new data can be given to FIFO only in case 
+      -- first stage is not in hold state
+      fifo_ready_upstream <=  int_reg_enable(0);
     end process;
 
 end architecture;

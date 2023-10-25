@@ -6,8 +6,8 @@ library IEEE;
 
 --------------------------------------------------------------
 -- Component Description
--- This VHDL file describe a component that take RCA's output
--- (Sum and Overflow flag) and generate flag encoded in this 
+-- This VHDL file describe a component that takes RCA's output
+-- (Sum and Overflow flag) and generates flag encoded in this 
 -- way:
 -- -> "11" : Zero Flag Codification
 -- -> "01" : Overflow Flag Codification
@@ -22,12 +22,17 @@ entity flag_generator is
     FLG_GEN_FLG_N_BITS  : positive  := 2
   );
   port(
+    -- INPUT --
     flg_gen_sum_res     : in  std_logic_vector(FLG_GEN_SUM_N_BITS-1 downto 0);  -- RCA sum result
     flg_gen_sum_of      : in  std_logic;                                        -- RCA overflow result
+    -- OUTPUT --
     flg_gen_flag_res    : out std_logic_vector(FLG_GEN_FLG_N_BITS-1 downto 0)   -- Flag result
   );
 end entity;
 
+--------------------------------------------------------------
+-- Architecture declaration
+--------------------------------------------------------------
 architecture flag_gen_arch of flag_generator is
 begin
   p_FLG_GEN: process(flg_gen_sum_res, flg_gen_sum_of) begin

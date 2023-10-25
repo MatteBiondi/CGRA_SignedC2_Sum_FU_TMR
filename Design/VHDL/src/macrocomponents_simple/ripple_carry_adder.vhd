@@ -58,8 +58,8 @@ begin
 			port map(
 				fa_a		=> rca_a(i),
 				fa_b 		=> rca_b(i),
-				fa_s 		=> rca_sum(i),
 				fa_cin 	=> carry(i),
+				fa_s 		=> rca_sum(i),
 				fa_cout => carry(i+1)
 			);    
   end generate;
