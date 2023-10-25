@@ -16,7 +16,7 @@ entity d_flip_flop_n is
     -- 1) bit 0-7 : Data payload
     -- 2) bit 8-9 : Data flag
     -- 3) bit 10  : Validity bit
-    DFF_N_BITS : natural := 11
+    DFF_N_BITS      : natural := 11
   );
   port (
     -- INPUT --
