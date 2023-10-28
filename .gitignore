@@ -1,5 +1,8 @@
 Design/Simulation/*/*/*
 !Design/Simulation/*/*/*.do
+!Design/Simulation/wrapper/subcomponents_for_wrapper/d_flip_flop
+Design/Simulation/wrapper/subcomponents_for_wrapper/d_flip_flop/*
+!Design/Simulation/wrapper/subcomponents_for_wrapper/d_flip_flop/**/*.do
 Design/Synthesis/*
 !Design/Synthesis/clock.xdc
 aux
