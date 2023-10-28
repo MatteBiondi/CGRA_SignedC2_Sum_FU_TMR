@@ -188,18 +188,21 @@ begin
           in_b(PAYL_WIDTH - 1 downto 0)           <=  std_logic_vector(to_signed(0,PAYL_WIDTH));
           valid_b     <=  '1';
           -- Description: A new valid data is presented as input to the first and second FIFO.
-          --              Ready from downstream is now active.
+          --              Ready from downstream is now active but its effect is visible in the next cycle.
           -- Result:  FIFO_1-> A new valid data is presented as input but it can not be save in FIFO because
           --                    it is full so ready to upstream is '0'.
           --          FIFO_2-> In the next clock cycle this data will occupy the first stage in the second 
           --                    FIFO. Previously presented data will shift by one to the right.
           --                    The FIFO will be full.
+          --          OUTPUT-> It doesn't change because of the output register that holds its precedent value
+          --                    due to the readydownstream that is '0'
 
-          -- From 7 to the end of the simulation (but not in 13) the FIFOs will be injected with the same data 
+          -- From 7 to the end of the simulation (but not in 15) the FIFOs will be injected with the same data 
           -- as in step above.
 
           -- In 7: A couple of valid data will be outputted from FIFO 1 and 2. The result of the sum will be 
-          --        saved in output register and presented as output in the next clock cycle
+          --        saved in output register and presented as output in the next clock cycle.
+          --        Output presents a not valid value
           -- In 8: The first valid result is outputted and a new sum is computed.   (Result: -1   with NF=10 flag)
           -- In 9: The second valid result is outputted and a new sum is computed.  (Result: 0    with ZF=11 flag)
           -- In 10: The third valid result is outputted and a new sum is computed.  (Result: -128 with OF=01 flag )
