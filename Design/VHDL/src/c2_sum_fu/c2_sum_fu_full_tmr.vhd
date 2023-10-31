@@ -252,7 +252,7 @@ begin
     ) 
     port map(
       flg_gen_tmr_sum_res     =>  int_sum_from_rca,
-      flg_gen_tmr_sum_of    =>  int_of_from_rca_to_flag_gen,
+      flg_gen_tmr_sum_of      =>  int_of_from_rca_to_flag_gen,
       flg_gen_tmr_flag_res    =>  int_flag_from_flag_gen_to_flag_slc
     );
   
