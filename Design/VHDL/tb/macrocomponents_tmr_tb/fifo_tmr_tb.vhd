@@ -18,7 +18,7 @@ architecture fifo_tmr_tb_arch of fifo_tmr_tb is
   constant CLK_PERIOD : time    := 100 ns;    -- Clock period
   constant T_RESET    : time    := 25 ns;     -- Period before the reset deactivation
   constant DEPTH      : natural := 4;         -- FIFO depth
-  constant DATA_WIDTH : natural := 11;        -- FIFO data width
+  constant DATA_WIDTH : natural := 10;        -- FIFO data width
   constant N_MODULES  : natural := 3;         -- N° Modules for TMR (3 by definition)
 
   ------------------------------------------------------------
@@ -173,7 +173,7 @@ begin
           -- Result: The FIFO is full. The previously presented data in first stage shift by 1 to the right
           --    and a 'hole' disappears. The previously presented data is written in the first stage. Now 
           --    the FIFO is full with no 'hole'. Ready upstream is '0' and all enable signals are '0'.  
-        when 8  =>  
+        when 8  =>  null;
           -- Description: Nothing change. FIFO is full and is not ready for accepting data. Valid input data 
           --    have to not be changed till FIFO become ready again.
           -- Result: FIFO waits for downstream to become ready and other FIFO to have valid data in the last 
