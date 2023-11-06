@@ -4,7 +4,7 @@ Design/Simulation/*/*/*
 Design/Simulation/wrapper/subcomponents_for_wrapper/d_flip_flop/*
 !Design/Simulation/wrapper/subcomponents_for_wrapper/d_flip_flop/**/*.do
 Design/Synthesis/*
-!Design/Synthesis/constraint_1.xdc
+!Design/Synthesis/clock.xdc
 aux
 *.bit 
 *.blg 
