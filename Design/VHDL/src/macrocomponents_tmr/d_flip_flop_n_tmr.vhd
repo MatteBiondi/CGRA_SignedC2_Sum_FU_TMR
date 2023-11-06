@@ -68,6 +68,8 @@ architecture dff_tmr_arch of d_flip_flop_n_tmr is
       dff_q           : out std_logic_vector(DFF_N_BITS - 1 downto 0)
     );
   end component;
+  attribute dont_touch : string;
+  attribute dont_touch of d_flip_flop_n : component is "true";
 
 begin
   -- Generation of DFF_TMR_N_MODULES D-Flip-Flop

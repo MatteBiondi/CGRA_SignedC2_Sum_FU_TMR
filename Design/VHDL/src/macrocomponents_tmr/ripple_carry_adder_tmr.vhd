@@ -66,6 +66,8 @@ architecture rca_tmr_arch of ripple_carry_adder_tmr is
       rca_of      : out std_logic
     );
   end component;
+  attribute dont_touch : string;
+  attribute dont_touch of ripple_carry_adder : component is "true";
 
 begin 
 

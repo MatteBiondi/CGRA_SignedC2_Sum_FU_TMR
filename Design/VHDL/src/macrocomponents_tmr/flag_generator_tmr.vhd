@@ -69,6 +69,8 @@ architecture flag_gen_tmr_arch of flag_generator_tmr is
       flg_gen_flag_res    : out std_logic_vector(FLG_GEN_FLG_N_BITS-1 downto 0)
     );
   end component;
+  attribute dont_touch : string;
+  attribute dont_touch of flag_generator : component is "true";
 
 begin
   -- Generation of FLG_GEN_TMR_N_MODULES D-Flip-Flop

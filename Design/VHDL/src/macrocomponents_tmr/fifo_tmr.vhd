@@ -76,6 +76,8 @@ architecture fifo_tmr_arch of fifo_tmr is
       dff_tmr_q           : out std_logic_vector(DFF_TMR_N_BITS - 1 downto 0)
     );
   end component;
+  attribute dont_touch : string;
+  attribute dont_touch of d_flip_flop_n_tmr : component is "true";
 
 begin
 

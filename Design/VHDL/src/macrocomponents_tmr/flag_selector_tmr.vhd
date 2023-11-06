@@ -73,6 +73,8 @@ architecture flag_slc_tmr_arch of flag_selector_tmr is
       flg_slc_res       : out std_logic_vector(FLG_SLC_FLAG_N_BITS-1 downto 0)
     );
   end component;
+  attribute dont_touch : string;
+  attribute dont_touch of flag_selector : component is "true";
 
 begin
   -- Generation of FLG_SLC_TMR_N_MODULES D-Flip-Flop
