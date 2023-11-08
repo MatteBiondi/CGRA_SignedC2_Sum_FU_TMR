@@ -59,15 +59,15 @@ architecture fifo_arch of fifo is
   --------------------------------------------------------------
   component d_flip_flop_n is
     generic ( 
-      DFF_N_BITS : natural
+      DFF_N_BITS        : natural
     );
     port (
-      dff_clk         : in std_logic;
-      dff_async_rst_n : in std_logic;
-      dff_en          : in std_logic;
-      dff_d           : in std_logic_vector(DFF_N_BITS - 1 downto 0);
+      dff_clk           : in std_logic;
+      dff_async_rst_n   : in std_logic;
+      dff_en            : in std_logic;
+      dff_d             : in std_logic_vector(DFF_N_BITS - 1 downto 0);
       
-      dff_q           : out std_logic_vector(DFF_N_BITS - 1 downto 0)
+      dff_q             : out std_logic_vector(DFF_N_BITS - 1 downto 0)
     );
   end component;
 

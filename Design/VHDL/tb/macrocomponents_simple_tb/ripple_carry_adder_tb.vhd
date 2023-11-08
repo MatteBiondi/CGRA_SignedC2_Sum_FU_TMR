@@ -24,14 +24,14 @@ architecture rca_tb_arch of ripple_carry_adder_tb is
   component ripple_carry_adder is 
     generic (
       -- Number of bits for each operand
-      RCA_N_BITS : positive
+      RCA_N_BITS  : positive
     );
     port(
-      rca_a     : in std_logic_vector(RCA_N_BITS-1 downto 0);   -- First operand
-      rca_b     : in std_logic_vector(RCA_N_BITS-1 downto 0);   -- Second operand
-      rca_cin		:	in std_logic;                                 -- Carry input
-      rca_sum   : out std_logic_vector(RCA_N_BITS-1 downto 0);  -- Sum result
-      rca_of    : out std_logic                                 -- Overflow output
+      rca_a       : in std_logic_vector(RCA_N_BITS-1 downto 0);   -- First operand
+      rca_b       : in std_logic_vector(RCA_N_BITS-1 downto 0);   -- Second operand
+      rca_cin		  :	in std_logic;                                 -- Carry input
+      rca_sum     : out std_logic_vector(RCA_N_BITS-1 downto 0);  -- Sum result
+      rca_of      : out std_logic                                 -- Overflow output
     );
   end component;
 

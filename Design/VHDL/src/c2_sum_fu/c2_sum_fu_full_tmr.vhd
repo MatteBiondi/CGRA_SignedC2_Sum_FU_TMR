@@ -31,19 +31,19 @@ entity c2_sum_fu_full_tmr is
   );
   port(
     -- INPUT --
-    sum_fu_full_tmr_clk         : in std_logic;                                                     -- Clock
-    sum_fu_full_tmr_async_rst_n : in std_logic;                                                     -- Asynchronous reset low
-    sum_fu_full_tmr_in_a        : in std_logic_vector(SUM_FU_FULL_TMR_DATA_WIDTH - 1 downto 0);     -- First operand
-    sum_fu_full_tmr_valid_a     : in std_logic;                                                     -- Validity bit for first operand
-    sum_fu_full_tmr_in_b        : in std_logic_vector(SUM_FU_FULL_TMR_DATA_WIDTH - 1 downto 0);     -- Second operand
-    sum_fu_full_tmr_valid_b     : in std_logic;                                                     -- Validity bit for second operand
-    sum_fu_full_tmr_ready_downs : in std_logic;                                                     -- Ready bit by downstream receiver
-    sum_fu_full_tmr_conf_wd     : in std_logic_vector(SUM_FU_FULL_TMR_CFG_WD_N_BITS - 1 downto 0);  -- Configuration word
+    sum_fu_full_tmr_clk           : in std_logic;                                                     -- Clock
+    sum_fu_full_tmr_async_rst_n   : in std_logic;                                                     -- Asynchronous reset low
+    sum_fu_full_tmr_in_a          : in std_logic_vector(SUM_FU_FULL_TMR_DATA_WIDTH - 1 downto 0);     -- First operand
+    sum_fu_full_tmr_valid_a       : in std_logic;                                                     -- Validity bit for first operand
+    sum_fu_full_tmr_in_b          : in std_logic_vector(SUM_FU_FULL_TMR_DATA_WIDTH - 1 downto 0);     -- Second operand
+    sum_fu_full_tmr_valid_b       : in std_logic;                                                     -- Validity bit for second operand
+    sum_fu_full_tmr_ready_downs   : in std_logic;                                                     -- Ready bit by downstream receiver
+    sum_fu_full_tmr_conf_wd       : in std_logic_vector(SUM_FU_FULL_TMR_CFG_WD_N_BITS - 1 downto 0);  -- Configuration word
     -- OUTPUT --
-    sum_fu_full_tmr_ready_a     : out std_logic;                                                    -- Ready bit to first upstream sender
-    sum_fu_full_tmr_ready_b     : out std_logic;                                                    -- Ready bit to second upstream sender
-    sum_fu_full_tmr_out_data    : out std_logic_vector(SUM_FU_FULL_TMR_DATA_WIDTH - 1 downto 0);    -- Output data payload
-    sum_fu_full_tmr_out_valid   : out std_logic                                                     -- Validity bit for output data
+    sum_fu_full_tmr_ready_a       : out std_logic;                                                    -- Ready bit to first upstream sender
+    sum_fu_full_tmr_ready_b       : out std_logic;                                                    -- Ready bit to second upstream sender
+    sum_fu_full_tmr_out_data      : out std_logic_vector(SUM_FU_FULL_TMR_DATA_WIDTH - 1 downto 0);    -- Output data payload
+    sum_fu_full_tmr_out_valid     : out std_logic                                                     -- Validity bit for output data
   );
 end entity;
 
@@ -233,27 +233,27 @@ begin
 
   g_RCA : ripple_carry_adder_tmr
     generic map(
-      RCA_TMR_N_MODULES     =>  SUM_FU_FULL_TMR_N_MODULES,
-      RCA_TMR_N_BITS        =>  SUM_FU_FULL_TMR_PAYL_WIDTH
+      RCA_TMR_N_MODULES         =>  SUM_FU_FULL_TMR_N_MODULES,
+      RCA_TMR_N_BITS            =>  SUM_FU_FULL_TMR_PAYL_WIDTH
     ) 
     port map(
-      rca_tmr_a             =>  int_payload_from_fifo1_to_rca,
-      rca_tmr_b             =>  int_payload_from_fifo2_to_rca,
-      rca_tmr_cin           =>  '0',
-      rca_tmr_sum           =>  int_sum_from_rca,
-      rca_tmr_of            =>  int_of_from_rca_to_flag_gen
+      rca_tmr_a                 =>  int_payload_from_fifo1_to_rca,
+      rca_tmr_b                 =>  int_payload_from_fifo2_to_rca,
+      rca_tmr_cin               =>  '0',
+      rca_tmr_sum               =>  int_sum_from_rca,
+      rca_tmr_of                =>  int_of_from_rca_to_flag_gen
     );
 
   g_FLG_GEN : flag_generator_tmr
     generic map(
-      FLG_GEN_TMR_SUM_N_BITS  =>  SUM_FU_FULL_TMR_PAYL_WIDTH,
-      FLG_GEN_TMR_FLG_N_BITS  =>  SUM_FU_FULL_TMR_FLAG_WIDTH,
-      FLG_GEN_TMR_N_MODULES   =>  SUM_FU_FULL_TMR_N_MODULES
+      FLG_GEN_TMR_SUM_N_BITS    =>  SUM_FU_FULL_TMR_PAYL_WIDTH,
+      FLG_GEN_TMR_FLG_N_BITS    =>  SUM_FU_FULL_TMR_FLAG_WIDTH,
+      FLG_GEN_TMR_N_MODULES     =>  SUM_FU_FULL_TMR_N_MODULES
     ) 
     port map(
-      flg_gen_tmr_sum_res     =>  int_sum_from_rca,
-      flg_gen_tmr_sum_of      =>  int_of_from_rca_to_flag_gen,
-      flg_gen_tmr_flag_res    =>  int_flag_from_flag_gen_to_flag_slc
+      flg_gen_tmr_sum_res       =>  int_sum_from_rca,
+      flg_gen_tmr_sum_of        =>  int_of_from_rca_to_flag_gen,
+      flg_gen_tmr_flag_res      =>  int_flag_from_flag_gen_to_flag_slc
     );
   
   g_FLG_SLC : flag_selector_tmr
@@ -272,15 +272,15 @@ begin
 
   g_OUT_REG : d_flip_flop_n_tmr
     generic map(
-      DFF_TMR_N_BITS       =>  SUM_FU_FULL_TMR_FULL_WIDTH,
-      DFF_TMR_N_MODULES    =>  SUM_FU_FULL_TMR_N_MODULES
+      DFF_TMR_N_BITS            =>  SUM_FU_FULL_TMR_FULL_WIDTH,
+      DFF_TMR_N_MODULES         =>  SUM_FU_FULL_TMR_N_MODULES
     )
     port map(
-      dff_tmr_clk          =>  sum_fu_full_tmr_clk,
-      dff_tmr_async_rst_n  =>  sum_fu_full_tmr_async_rst_n,
-      dff_tmr_en           =>  sum_fu_full_tmr_ready_downs,
-      dff_tmr_d            =>  int_data_to_out_reg,
-      dff_tmr_q            =>  int_data_from_out_reg
+      dff_tmr_clk               =>  sum_fu_full_tmr_clk,
+      dff_tmr_async_rst_n       =>  sum_fu_full_tmr_async_rst_n,
+      dff_tmr_en                =>  sum_fu_full_tmr_ready_downs,
+      dff_tmr_d                 =>  int_data_to_out_reg,
+      dff_tmr_q                 =>  int_data_from_out_reg
     );
 
   -- Separate flag and payload from FIFOs output signals
@@ -292,8 +292,8 @@ begin
   int_payload_from_fifo2_to_rca   <= int_data_from_fifo2 (SUM_FU_FULL_TMR_PAYL_WIDTH-1 downto 0);
   
   -- Separate validity bit and data from output register data
-  sum_fu_full_tmr_out_valid            <= int_data_from_out_reg (SUM_FU_FULL_TMR_FULL_WIDTH - 1);
-  sum_fu_full_tmr_out_data             <= int_data_from_out_reg (SUM_FU_FULL_TMR_FULL_WIDTH - 2 downto 0);
+  sum_fu_full_tmr_out_valid       <= int_data_from_out_reg (SUM_FU_FULL_TMR_FULL_WIDTH - 1);
+  sum_fu_full_tmr_out_data        <= int_data_from_out_reg (SUM_FU_FULL_TMR_FULL_WIDTH - 2 downto 0);
 
   -- Compute valitidy bit from operands validity bits
   int_valid_to_out_reg            <= int_valid_from_fifo1 and int_valid_from_fifo2;

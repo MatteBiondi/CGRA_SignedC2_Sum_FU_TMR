@@ -14,16 +14,16 @@ library IEEE;
 entity ripple_carry_adder is 
 	generic (
 		-- Number of bits for each operand
-		RCA_N_BITS : positive := 8
+		RCA_N_BITS 	: positive := 8
 	);
 	port(
 		-- INPUT --
-		rca_a     : in std_logic_vector(RCA_N_BITS-1 downto 0);		-- First operand
-		rca_b     : in std_logic_vector(RCA_N_BITS-1 downto 0);		-- Second operand
-		rca_cin		:	in std_logic;																	-- Carry input
+		rca_a     	: in std_logic_vector(RCA_N_BITS-1 downto 0);		-- First operand
+		rca_b     	: in std_logic_vector(RCA_N_BITS-1 downto 0);		-- Second operand
+		rca_cin			:	in std_logic;																	-- Carry input
 		-- OUTPUT --
-		rca_sum   : out std_logic_vector(RCA_N_BITS-1 downto 0);	-- Sum result
-		rca_of  	: out std_logic																	-- Overflow output
+		rca_sum   	: out std_logic_vector(RCA_N_BITS-1 downto 0);	-- Sum result
+		rca_of  		: out std_logic																	-- Overflow output
 	);
 end entity;
 

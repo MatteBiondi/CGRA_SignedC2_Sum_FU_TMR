@@ -65,8 +65,8 @@ architecture fifo_tmr_arch of fifo_tmr is
   --------------------------------------------------------------
   component d_flip_flop_n_tmr is
     generic (
-      DFF_TMR_N_BITS    : natural;
-      DFF_TMR_N_MODULES : positive
+      DFF_TMR_N_BITS      : natural;
+      DFF_TMR_N_MODULES   : positive
     );
     port (
       dff_tmr_clk         : in std_logic;

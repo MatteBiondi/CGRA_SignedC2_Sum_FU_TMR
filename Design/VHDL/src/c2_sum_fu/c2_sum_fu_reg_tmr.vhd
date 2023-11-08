@@ -31,19 +31,19 @@ entity c2_sum_fu_reg_tmr is
   );
   port(
     -- INPUT --
-    sum_fu_reg_tmr_clk          : in std_logic;                                                   -- Clock
-    sum_fu_reg_tmr_async_rst_n  : in std_logic;                                                   -- Asynchronous reset low
-    sum_fu_reg_tmr_in_a         : in std_logic_vector(SUM_FU_REG_TMR_DATA_WIDTH - 1 downto 0);    -- First operand
-    sum_fu_reg_tmr_valid_a      : in std_logic;                                                   -- Validity bit for first operand
-    sum_fu_reg_tmr_in_b         : in std_logic_vector(SUM_FU_REG_TMR_DATA_WIDTH - 1 downto 0);    -- Second operand
-    sum_fu_reg_tmr_valid_b      : in std_logic;                                                   -- Validity bit for second operand
-    sum_fu_reg_tmr_ready_downs  : in std_logic;                                                   -- Ready bit by downstream receiver
-    sum_fu_reg_tmr_conf_wd      : in std_logic_vector(SUM_FU_REG_TMR_CFG_WD_N_BITS - 1 downto 0); -- Configuration word
+    sum_fu_reg_tmr_clk            : in std_logic;                                                   -- Clock
+    sum_fu_reg_tmr_async_rst_n    : in std_logic;                                                   -- Asynchronous reset low
+    sum_fu_reg_tmr_in_a           : in std_logic_vector(SUM_FU_REG_TMR_DATA_WIDTH - 1 downto 0);    -- First operand
+    sum_fu_reg_tmr_valid_a        : in std_logic;                                                   -- Validity bit for first operand
+    sum_fu_reg_tmr_in_b           : in std_logic_vector(SUM_FU_REG_TMR_DATA_WIDTH - 1 downto 0);    -- Second operand
+    sum_fu_reg_tmr_valid_b        : in std_logic;                                                   -- Validity bit for second operand
+    sum_fu_reg_tmr_ready_downs    : in std_logic;                                                   -- Ready bit by downstream receiver
+    sum_fu_reg_tmr_conf_wd        : in std_logic_vector(SUM_FU_REG_TMR_CFG_WD_N_BITS - 1 downto 0); -- Configuration word
     -- OUTPUT --
-    sum_fu_reg_tmr_ready_a      : out std_logic;                                                  -- Ready bit to first upstream sender
-    sum_fu_reg_tmr_ready_b      : out std_logic;                                                  -- Ready bit to second upstream sender
-    sum_fu_reg_tmr_out_data     : out std_logic_vector(SUM_FU_REG_TMR_DATA_WIDTH - 1 downto 0);   -- Output data payload
-    sum_fu_reg_tmr_out_valid    : out std_logic                                                   -- Validity bit for output data
+    sum_fu_reg_tmr_ready_a        : out std_logic;                                                  -- Ready bit to first upstream sender
+    sum_fu_reg_tmr_ready_b        : out std_logic;                                                  -- Ready bit to second upstream sender
+    sum_fu_reg_tmr_out_data       : out std_logic_vector(SUM_FU_REG_TMR_DATA_WIDTH - 1 downto 0);   -- Output data payload
+    sum_fu_reg_tmr_out_valid      : out std_logic                                                   -- Validity bit for output data
   );
 end entity;
 
@@ -116,16 +116,16 @@ architecture c2_sum_fu_reg_tmr_arch of c2_sum_fu_reg_tmr is
   component ripple_carry_adder is 
     generic (
       -- Number of bits for each operand
-      RCA_N_BITS : positive
+      RCA_N_BITS  : positive
     );
     port(
       -- INPUT --
-      rca_a     : in std_logic_vector(RCA_N_BITS-1 downto 0);		-- First operand
-      rca_b     : in std_logic_vector(RCA_N_BITS-1 downto 0);		-- Second operand
-      rca_cin		:	in std_logic;																	-- Carry input
+      rca_a       : in std_logic_vector(RCA_N_BITS-1 downto 0);		-- First operand
+      rca_b       : in std_logic_vector(RCA_N_BITS-1 downto 0);		-- Second operand
+      rca_cin		  :	in std_logic;																	-- Carry input
       -- OUTPUT --
-      rca_sum   : out std_logic_vector(RCA_N_BITS-1 downto 0);	-- Sum result
-      rca_of  	: out std_logic																	-- Overflow output
+      rca_sum     : out std_logic_vector(RCA_N_BITS-1 downto 0);	-- Sum result
+      rca_of  	  : out std_logic																	-- Overflow output
     );
   end component;
 
@@ -280,8 +280,8 @@ begin
   int_payload_from_fifo2_to_rca   <= int_data_from_fifo2 (SUM_FU_REG_TMR_PAYL_WIDTH-1 downto 0);
   
   -- Separate validity bit and data from output register data
-  sum_fu_reg_tmr_out_valid            <= int_data_from_out_reg (SUM_FU_REG_TMR_FULL_WIDTH - 1);
-  sum_fu_reg_tmr_out_data             <= int_data_from_out_reg (SUM_FU_REG_TMR_FULL_WIDTH - 2 downto 0);
+  sum_fu_reg_tmr_out_valid        <= int_data_from_out_reg (SUM_FU_REG_TMR_FULL_WIDTH - 1);
+  sum_fu_reg_tmr_out_data         <= int_data_from_out_reg (SUM_FU_REG_TMR_FULL_WIDTH - 2 downto 0);
 
   -- Compute valitidy bit from operands validity bits
   int_valid_to_out_reg            <= int_valid_from_fifo1 and int_valid_from_fifo2;

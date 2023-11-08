@@ -30,19 +30,19 @@ entity wr_c2_sum_fu_full_tmr is
   );
   port(
     -- INPUT --
-    clk         : in std_logic;                                   -- Clock
-    async_rst_n : in std_logic;                                   -- Asynchronous reset low
-    in_a        : in std_logic_vector(DATA_WIDTH - 1 downto 0);   -- First operand
-    valid_a     : in std_logic;                                   -- Validity bit for first operand
-    in_b        : in std_logic_vector(DATA_WIDTH - 1 downto 0);   -- Second operand
-    valid_b     : in std_logic;                                   -- Validity bit for second operand
-    ready_downs : in std_logic;                                   -- Ready bit by downstream receiver
-    conf_wd     : in std_logic_vector(CFG_WD_N_BITS-1 downto 0);  -- Configuration word
+    clk           : in std_logic;                                   -- Clock
+    async_rst_n   : in std_logic;                                   -- Asynchronous reset low
+    in_a          : in std_logic_vector(DATA_WIDTH - 1 downto 0);   -- First operand
+    valid_a       : in std_logic;                                   -- Validity bit for first operand
+    in_b          : in std_logic_vector(DATA_WIDTH - 1 downto 0);   -- Second operand
+    valid_b       : in std_logic;                                   -- Validity bit for second operand
+    ready_downs   : in std_logic;                                   -- Ready bit by downstream receiver
+    conf_wd       : in std_logic_vector(CFG_WD_N_BITS-1 downto 0);  -- Configuration word
     -- OUTPUT --
-    ready_a     : out std_logic;                                  -- Ready bit to first upstream sender
-    ready_b     : out std_logic;                                  -- Ready bit to second upstream sender
-    out_data    : out std_logic_vector(DATA_WIDTH - 1 downto 0);  -- Output data payload
-    out_valid   : out std_logic                                   -- Validity bit for output data
+    ready_a       : out std_logic;                                  -- Ready bit to first upstream sender
+    ready_b       : out std_logic;                                  -- Ready bit to second upstream sender
+    out_data      : out std_logic_vector(DATA_WIDTH - 1 downto 0);  -- Output data payload
+    out_valid     : out std_logic                                   -- Validity bit for output data
   );
 end entity;
 

@@ -96,19 +96,19 @@ architecture wr_c2_sum_fu_simple_arch of wr_c2_sum_fu_simple is
     );
     port(
       -- INPUT --
-      sum_fu_smp_clk          : in std_logic;                                               -- Clock
-      sum_fu_smp_async_rst_n  : in std_logic;                                               -- Asynchronous reset low
-      sum_fu_smp_in_a         : in std_logic_vector(SUM_FU_SMP_DATA_WIDTH - 1 downto 0);    -- First operand
-      sum_fu_smp_valid_a      : in std_logic;                                               -- Validity bit for first operand
-      sum_fu_smp_in_b         : in std_logic_vector(SUM_FU_SMP_DATA_WIDTH - 1 downto 0);    -- Second operand
-      sum_fu_smp_valid_b      : in std_logic;                                               -- Validity bit for second operand
-      sum_fu_smp_ready_downs  : in std_logic;                                               -- Ready bit by downstream receiver
-      sum_fu_smp_conf_wd      : in std_logic_vector(SUM_FU_SMP_CFG_WD_N_BITS - 1 downto 0); -- Configuration word
+      sum_fu_smp_clk            : in std_logic;                                               -- Clock
+      sum_fu_smp_async_rst_n    : in std_logic;                                               -- Asynchronous reset low
+      sum_fu_smp_in_a           : in std_logic_vector(SUM_FU_SMP_DATA_WIDTH - 1 downto 0);    -- First operand
+      sum_fu_smp_valid_a        : in std_logic;                                               -- Validity bit for first operand
+      sum_fu_smp_in_b           : in std_logic_vector(SUM_FU_SMP_DATA_WIDTH - 1 downto 0);    -- Second operand
+      sum_fu_smp_valid_b        : in std_logic;                                               -- Validity bit for second operand
+      sum_fu_smp_ready_downs    : in std_logic;                                               -- Ready bit by downstream receiver
+      sum_fu_smp_conf_wd        : in std_logic_vector(SUM_FU_SMP_CFG_WD_N_BITS - 1 downto 0); -- Configuration word
       -- OUTPUT --
-      sum_fu_smp_ready_a      : out std_logic;                                              -- Ready bit to first upstream sender
-      sum_fu_smp_ready_b      : out std_logic;                                              -- Ready bit to second upstream sender
-      sum_fu_smp_out_data     : out std_logic_vector(SUM_FU_SMP_DATA_WIDTH - 1 downto 0);   -- Output data payload
-      sum_fu_smp_out_valid    : out std_logic                                               -- Validity bit for output data
+      sum_fu_smp_ready_a        : out std_logic;                                              -- Ready bit to first upstream sender
+      sum_fu_smp_ready_b        : out std_logic;                                              -- Ready bit to second upstream sender
+      sum_fu_smp_out_data       : out std_logic_vector(SUM_FU_SMP_DATA_WIDTH - 1 downto 0);   -- Output data payload
+      sum_fu_smp_out_valid      : out std_logic                                               -- Validity bit for output data
     );
   end component;
 

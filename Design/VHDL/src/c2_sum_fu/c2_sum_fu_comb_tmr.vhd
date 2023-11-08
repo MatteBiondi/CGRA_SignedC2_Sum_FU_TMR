@@ -243,7 +243,7 @@ begin
     ) 
     port map(
       flg_gen_tmr_sum_res     =>  int_sum_from_rca,
-      flg_gen_tmr_sum_of    =>  int_of_from_rca_to_flag_gen,
+      flg_gen_tmr_sum_of      =>  int_of_from_rca_to_flag_gen,
       flg_gen_tmr_flag_res    =>  int_flag_from_flag_gen_to_flag_slc
     );
   
@@ -282,8 +282,8 @@ begin
   int_payload_from_fifo2_to_rca   <= int_data_from_fifo2 (SUM_FU_COMB_TMR_PAYL_WIDTH-1 downto 0);
   
   -- Separate validity bit and data from output register data
-  sum_fu_comb_tmr_out_valid            <= int_data_from_out_reg (SUM_FU_COMB_TMR_FULL_WIDTH - 1);
-  sum_fu_comb_tmr_out_data             <= int_data_from_out_reg (SUM_FU_COMB_TMR_FULL_WIDTH - 2 downto 0);
+  sum_fu_comb_tmr_out_valid       <= int_data_from_out_reg (SUM_FU_COMB_TMR_FULL_WIDTH - 1);
+  sum_fu_comb_tmr_out_data        <= int_data_from_out_reg (SUM_FU_COMB_TMR_FULL_WIDTH - 2 downto 0);
 
   -- Compute valitidy bit from operands validity bits
   int_valid_to_out_reg            <= int_valid_from_fifo1 and int_valid_from_fifo2;
